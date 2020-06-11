@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 import 'package:random_color/random_color.dart';
+import 'dart:math';
+import 'dart:math' as math;
 
 class HomeScreen2 extends StatefulWidget {
   @override
@@ -17,9 +19,28 @@ class _HomeScreen2State extends State<HomeScreen2> {
     Disc(name: 'Buzzz'),
     Disc(name: 'Thrasher'),
     Disc(name: 'Sheriff'),
-    Disc(name: 'Crank'),
+    Disc(name: 'Buzzz SS'),
     Disc(name: 'Warden'),
-    Disc(name: 'Bard'),
+    Disc(name: 'Aviar'),
+    Disc(name: 'Roc'),
+    Disc(name: 'Malta'),
+    Disc(name: 'Leopard'),
+    Disc(name: 'Patriot'),
+    Disc(name: 'Stag'),
+    Disc(name: 'McDoogle Choice'),
+    Disc(name: 'You Choose'),
+    Disc(name: 'They Choose'),
+    Disc(name: 'Putter'),
+    Disc(name: 'Driver'),
+    Disc(name: 'Midrange'),
+    Disc(name: 'Fairway'),
+    Disc(name: 'Wraith'),
+    Disc(name: 'Katana'),
+    Disc(name: 'Teebird'),
+    Disc(name: 'Firebird'),
+    Disc(name: 'OG Beast'),
+
+
   ];
 
   @override
@@ -32,6 +53,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
   body() {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           discWheel3(),
@@ -89,7 +111,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
     String disc = "";
     final items = discList;
     return Container(
-      height: 500,
+      height: 700,
       child: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification){
           if(scrollNotification is ScrollEndNotification){
@@ -99,7 +121,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
 
         },
         child: ListWheelScrollView.useDelegate(
-          physics: customScroll,
+          physics: CustomScrollPhysics(),
+          useMagnifier: true,
+          magnification: 1.5,
 
 
           itemExtent: 60,
@@ -129,33 +153,65 @@ class Disc {
   Disc({this.name, this.image});
 }
 class CustomSim extends Simulation{
+  final double initPosition;
+  final double velocity;
+
+
+  CustomSim(this.initPosition, this.velocity);
 
   @override
   double x(double time) {
-
-  }
+    Random rand = Random();
+    var num = 1+rand.nextInt(50);
+    var test = initPosition+(velocity)*time;
+   return test;
+}
 
 
   @override
   bool isDone(double time) {
+    Random rand = Random();
+    var num = 1+rand.nextInt(5);
+
+    if(time<1+num){
+      return false;
+    } else return true;
 
   }
 
   @override
   double dx(double time) {
+    Random rand = Random();
+    var num = rand.nextInt(5);
+
+
+    return velocity+num;
 
   }
 }
 
 class CustomScrollPhysics extends ScrollPhysics{
 
+
   @override
   ScrollPhysics applyTo(ScrollPhysics ancestor) {
+    return CustomScrollPhysics();
 
   }
 
   @override
   double carriedMomentum(double existingVelocity) {
+
+  }
+
+  @override
+  Simulation createBallisticSimulation(ScrollMetrics position,
+      double velocity) {
+    Random rand = Random();
+    var num = rand.nextInt(100);
+    var randVel = (1-(1/(.05+num)));
+    return CustomSim(position.pixels, velocity);
+
 
   }
 }
