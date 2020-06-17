@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 import 'package:random_color/random_color.dart';
 import 'dart:math';
@@ -56,7 +57,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          discWheel3(),
+          Transform.scale(scale: .5,child: discWheel3(),),
         ],
       ),
     );
@@ -164,18 +165,26 @@ class CustomSim extends Simulation{
     Random rand = Random();
     var num = 1+rand.nextInt(50);
     var test = initPosition+(velocity)*time;
+    int test2 = test.truncate();
+    print(test2);
    return test;
 }
 
 
   @override
   bool isDone(double time) {
+    bool isDivisible(int dividend, int divisor){
+      return dividend % divisor == 0;
+    }
+    var test = initPosition+(velocity)*time;
+    int test2 = test.truncate();
+
     Random rand = Random();
     var num = 1+rand.nextInt(5);
 
-    if(time<1+num){
-      return false;
-    } else return true;
+    if(time>1+num && isDivisible(test2, 60)==true){
+      return true;
+    } else return false;
 
   }
 
