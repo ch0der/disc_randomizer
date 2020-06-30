@@ -52,14 +52,22 @@ class _HomeScreen2State extends State<HomeScreen2> {
   }
 
   body() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Container(
+      child: Row(
         children: <Widget>[
-          Transform.scale(scale: .5,child: discWheel3(),),
+          Container(width: screenSize(context).width*.05,),
+          discWheelTest(),
+          Container(width: 40,),
+          discWheelTest(),
         ],
       ),
+    );
+  }
+  discWheelTest(){
+    return Container(
+      width: screenSize(context).width*.31,
+      height: screenSize(context).height*.43,
+      child: discWheel3(),
     );
   }
 
@@ -83,6 +91,9 @@ class _HomeScreen2State extends State<HomeScreen2> {
             );
           }),
     );
+  }
+  screenSize(BuildContext context) {
+    return MediaQuery.of(context).size;
   }
 
   discWheel2() {
@@ -112,11 +123,11 @@ class _HomeScreen2State extends State<HomeScreen2> {
     String disc = "";
     final items = discList;
     return Container(
-      height: 700,
+      height: screenSize(context).height*.5,
       child: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification){
           if(scrollNotification is ScrollEndNotification){
-            print('$scrollNotification');
+
           }
           return true;
 
@@ -124,19 +135,19 @@ class _HomeScreen2State extends State<HomeScreen2> {
         child: ListWheelScrollView.useDelegate(
           physics: CustomScrollPhysics(),
           useMagnifier: true,
-          magnification: 1.5,
+          magnification: 1.15,
 
 
-          itemExtent: 60,
+          itemExtent: 30,
           childDelegate: ListWheelChildLoopingListDelegate(
             children: List.generate(items.length, (index) {
               final item = discList[index];
               return Container(
                 color: RandomColor().randomColor( colorBrightness: ColorBrightness.light,),
-                height: 10,
-                width: 250,
+                height: 30,
+                width: screenSize(context).width*.3,
                 child: Center(
-                  child: Text(item.name,style: TextStyle(color: Colors.white,fontSize: 30),),
+                  child: Text(item.name,style: TextStyle(color: Colors.white,fontSize: 13),),
                 ),
               );
             }),
@@ -166,7 +177,6 @@ class CustomSim extends Simulation{
     var num = 1+rand.nextInt(50);
     var test = initPosition+(velocity)*time;
     int test2 = test.truncate();
-    print(test2);
    return test;
 }
 
@@ -182,7 +192,7 @@ class CustomSim extends Simulation{
     Random rand = Random();
     var num = 1+rand.nextInt(5);
 
-    if(time>1+num && isDivisible(test2, 60)==true){
+    if(time>1+num && isDivisible(test2, 30)==true){
       return true;
     } else return false;
 
